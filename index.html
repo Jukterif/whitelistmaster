@@ -1,0 +1,48 @@
+<html>
+<head>
+  <title>Whitelist master</title>
+</head>
+<body>
+ 
+Input 
+<br>
+<textarea id="links" cols="80" rows="20"></textarea>
+<br>
+<button id="process">Whitelist items</button>
+ 
+<hr>
+Result
+<br>
+<textarea id="result" cols="80" rows="20"></textarea>
+<br>
+<button onclick="copyToClipboard()">Copy to clipboard</button>
+
+<script>
+var whitelist_domain = ['test.com', 'example.com']
+function whitelist_process() {
+	var answer = '';
+    var urls = document.getElementById('links').value.split('\n');
+    for (var url in urls) {
+    	var pirate = true;
+    	var link = urls[url];
+        for (var domain in window.whitelist_domain) {
+        	if (link.includes(window.whitelist_domain[domain])) {
+            	pirate = false;
+                break;
+            }
+        }
+        if (url != urls.length) link += '\n';
+		if (pirate) answer += link; 
+    }
+    document.getElementById('result').innerHTML = answer;
+}
+function copyToClipboard() {
+    var copyText = document.getElementById("result");
+    copyText.select();
+    document.execCommand('copy'); 
+  }
+document.getElementById('process').addEventListener('click', whitelist_process);
+</script>
+ 
+</body>
+</html>
